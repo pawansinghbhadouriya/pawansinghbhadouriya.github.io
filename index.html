@@ -9,19 +9,22 @@
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
+
 body{
   font-family:Arial,sans-serif;
   background:#f5f7fa;
   color:#17202a;
 }
+
 header{
   background:#123b2a;
   color:white;
   padding:18px 15px;
   position:sticky;
   top:0;
-  z-index:10;
+  z-index:100;
 }
+
 .header{
   max-width:1200px;
   margin:auto;
@@ -30,18 +33,40 @@ header{
   justify-content:space-between;
   gap:15px;
 }
+
 .logo{
   font-size:22px;
   font-weight:700;
 }
+
 .tag{
   font-size:12px;
   opacity:.8;
 }
+
+.cart-btn{
+  background:white;
+  color:#123b2a;
+  border:0;
+  padding:11px 15px;
+  border-radius:10px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.cart-count{
+  background:#24734b;
+  color:white;
+  padding:2px 7px;
+  border-radius:20px;
+  margin-left:4px;
+}
+
 .search{
   max-width:1200px;
   margin:15px auto 0;
 }
+
 .search input{
   width:100%;
   padding:14px 16px;
@@ -50,6 +75,7 @@ header{
   font-size:16px;
   outline:none;
 }
+
 .hero{
   max-width:1200px;
   margin:20px auto;
@@ -58,8 +84,16 @@ header{
   background:linear-gradient(135deg,#123b2a,#24734b);
   color:white;
 }
-.hero h1{font-size:30px;margin-bottom:8px}
-.hero p{opacity:.9}
+
+.hero h1{
+  font-size:30px;
+  margin-bottom:8px;
+}
+
+.hero p{
+  opacity:.9;
+}
+
 .categories{
   max-width:1200px;
   margin:20px auto;
@@ -68,6 +102,7 @@ header{
   overflow-x:auto;
   padding:5px;
 }
+
 .categories button{
   white-space:nowrap;
   border:1px solid #ddd;
@@ -76,25 +111,30 @@ header{
   border-radius:20px;
   cursor:pointer;
 }
+
 .categories button.active{
   background:#123b2a;
   color:white;
 }
+
 .container{
   max-width:1200px;
   margin:auto;
   padding:10px;
 }
+
 .title{
   font-size:22px;
   font-weight:700;
   margin:15px 0;
 }
+
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
   gap:15px;
 }
+
 .card{
   background:white;
   border-radius:14px;
@@ -102,6 +142,7 @@ header{
   box-shadow:0 3px 12px rgba(0,0,0,.08);
   padding:12px;
 }
+
 .product-image{
   height:170px;
   background:#eef2f0;
@@ -112,49 +153,66 @@ header{
   margin-bottom:12px;
   overflow:hidden;
 }
+
 .product-image img{
   width:100%;
   height:100%;
   object-fit:contain;
 }
+
 .no-image{
   color:#7b8794;
   font-size:14px;
 }
+
 .brand{
   color:#24734b;
   font-size:12px;
   font-weight:700;
   margin-bottom:5px;
 }
+
 .name{
   font-size:15px;
   font-weight:600;
   line-height:1.35;
   min-height:42px;
 }
+
 .qty{
   font-size:13px;
   color:#68737d;
   margin:7px 0;
 }
+
 .price{
   font-size:20px;
   font-weight:700;
   color:#123b2a;
+  margin-bottom:10px;
 }
-.source{
-  display:inline-block;
-  margin-top:10px;
-  text-decoration:none;
-  color:#24734b;
-  font-size:12px;
+
+.add-btn{
+  width:100%;
+  border:0;
+  background:#123b2a;
+  color:white;
+  padding:11px;
+  border-radius:9px;
+  font-weight:700;
+  cursor:pointer;
 }
+
+.add-btn:active{
+  transform:scale(.98);
+}
+
 .loading,.empty{
   text-align:center;
   padding:40px 10px;
   color:#667;
 }
+
 footer{
   margin-top:40px;
   background:#123b2a;
@@ -162,13 +220,228 @@ footer{
   text-align:center;
   padding:25px;
 }
+
+/* CART */
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:500;
+  overflow-y:auto;
+  padding:20px;
+}
+
+.modal-box{
+  background:white;
+  max-width:650px;
+  margin:30px auto;
+  border-radius:16px;
+  padding:20px;
+  position:relative;
+}
+
+.modal-title{
+  font-size:22px;
+  font-weight:700;
+  margin-bottom:15px;
+}
+
+.close{
+  position:absolute;
+  right:15px;
+  top:12px;
+  border:0;
+  background:#eee;
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  font-size:20px;
+  cursor:pointer;
+}
+
+.cart-item{
+  display:flex;
+  gap:12px;
+  border-bottom:1px solid #eee;
+  padding:12px 0;
+  align-items:center;
+}
+
+.cart-item img{
+  width:70px;
+  height:70px;
+  object-fit:contain;
+  background:#eef2f0;
+  border-radius:8px;
+}
+
+.cart-info{
+  flex:1;
+}
+
+.cart-name{
+  font-weight:700;
+  font-size:14px;
+}
+
+.cart-price{
+  color:#123b2a;
+  font-weight:700;
+  margin-top:4px;
+}
+
+.qty-control{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:8px;
+}
+
+.qty-control button{
+  border:1px solid #ccc;
+  background:white;
+  width:30px;
+  height:30px;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.remove-btn{
+  border:0;
+  background:#ffecec;
+  color:#c00;
+  padding:7px;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.cart-total{
+  text-align:right;
+  font-size:21px;
+  font-weight:700;
+  margin:18px 0;
+  color:#123b2a;
+}
+
+.checkout-btn{
+  width:100%;
+  background:#24734b;
+  color:white;
+  border:0;
+  padding:14px;
+  border-radius:10px;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* CHECKOUT */
+
+.form-group{
+  margin-bottom:12px;
+}
+
+.form-group label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:5px;
+}
+
+.form-group input,
+.form-group textarea{
+  width:100%;
+  border:1px solid #d5d9dc;
+  border-radius:8px;
+  padding:12px;
+  font-size:15px;
+  outline:none;
+}
+
+.form-group textarea{
+  min-height:80px;
+  resize:vertical;
+}
+
+.place-order{
+  width:100%;
+  background:#123b2a;
+  color:white;
+  border:0;
+  padding:14px;
+  border-radius:10px;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.message{
+  padding:12px;
+  border-radius:8px;
+  margin-bottom:12px;
+  display:none;
+}
+
+.success{
+  background:#e8f7ed;
+  color:#176b37;
+}
+
+.error{
+  background:#ffecec;
+  color:#a40000;
+}
+
+.order-success{
+  text-align:center;
+  padding:20px 5px;
+}
+
+.order-number{
+  font-size:24px;
+  font-weight:700;
+  color:#123b2a;
+  margin:15px 0;
+}
+
 @media(max-width:600px){
-  .header{align-items:flex-start}
-  .hero h1{font-size:24px}
-  .grid{grid-template-columns:repeat(2,1fr);gap:10px}
-  .product-image{height:140px}
-  .name{font-size:14px}
-  .price{font-size:18px}
+
+  .header{
+    align-items:flex-start;
+  }
+
+  .hero h1{
+    font-size:24px;
+  }
+
+  .grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+  }
+
+  .product-image{
+    height:140px;
+  }
+
+  .name{
+    font-size:14px;
+  }
+
+  .price{
+    font-size:18px;
+  }
+
+  .modal{
+    padding:8px;
+  }
+
+  .modal-box{
+    margin:10px auto;
+    padding:15px;
+  }
 }
 </style>
 </head>
@@ -176,50 +449,291 @@ footer{
 <body>
 
 <header>
+
   <div class="header">
+
     <div>
       <div class="logo">RCM Products Store</div>
       <div class="tag">Quality Products • Easy Shopping</div>
     </div>
+
+    <button class="cart-btn" onclick="openCart()">
+      🛒 Cart
+      <span id="cartCount" class="cart-count">0</span>
+    </button>
+
   </div>
 
   <div class="search">
-    <input id="search" type="search"
-      placeholder="Search products...">
+    <input
+      id="search"
+      type="search"
+      placeholder="Search products..."
+    >
   </div>
+
 </header>
 
 <section class="hero">
+
   <h1>Welcome to Our Product Store</h1>
-  <p>Explore products by category and find what you need.</p>
+
+  <p>
+    Explore products by category and find what you need.
+  </p>
+
 </section>
 
 <div class="categories" id="categories"></div>
 
 <main class="container">
-  <div class="title" id="heading">All Products</div>
-  <div id="products" class="grid">
-    <div class="loading">Loading products...</div>
+
+  <div class="title" id="heading">
+    All Products
   </div>
+
+  <div id="products" class="grid">
+
+    <div class="loading">
+      Loading products...
+    </div>
+
+  </div>
+
 </main>
 
 <footer>
+
   <p>© 2026 RCM Products Store</p>
-  <p style="margin-top:6px;font-size:12px">Product information sourced from official RCM listings.</p>
+
+  <p style="margin-top:6px;font-size:12px">
+    Product information sourced from official RCM listings.
+  </p>
+
 </footer>
 
+
+<!-- CART MODAL -->
+
+<div id="cartModal" class="modal">
+
+  <div class="modal-box">
+
+    <button class="close" onclick="closeCart()">×</button>
+
+    <div class="modal-title">
+      Your Cart
+    </div>
+
+    <div id="cartItems"></div>
+
+    <div id="cartTotal" class="cart-total">
+      Total: ₹0
+    </div>
+
+    <button
+      id="checkoutButton"
+      class="checkout-btn"
+      onclick="openCheckout()">
+      Proceed to Checkout
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- CHECKOUT MODAL -->
+
+<div id="checkoutModal" class="modal">
+
+  <div class="modal-box">
+
+    <button class="close" onclick="closeCheckout()">×</button>
+
+    <div class="modal-title">
+      Customer Details
+    </div>
+
+    <div id="checkoutMessage" class="message"></div>
+
+    <form id="checkoutForm">
+
+      <div class="form-group">
+
+        <label>Full Name *</label>
+
+        <input
+          id="customerName"
+          type="text"
+          required
+          placeholder="Enter your full name">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Mobile Number *</label>
+
+        <input
+          id="customerMobile"
+          type="tel"
+          required
+          maxlength="10"
+          placeholder="10 digit mobile number">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Email</label>
+
+        <input
+          id="customerEmail"
+          type="email"
+          placeholder="Email address">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Address *</label>
+
+        <textarea
+          id="customerAddress"
+          required
+          placeholder="House No, Street, Area"></textarea>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>City *</label>
+
+        <input
+          id="customerCity"
+          type="text"
+          required
+          placeholder="City">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>State *</label>
+
+        <input
+          id="customerState"
+          type="text"
+          required
+          placeholder="State">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Pincode *</label>
+
+        <input
+          id="customerPincode"
+          type="text"
+          required
+          maxlength="6"
+          placeholder="6 digit pincode">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Payment Method</label>
+
+        <input
+          type="text"
+          value="Cash on Delivery"
+          readonly>
+
+      </div>
+
+
+      <button
+        id="placeOrderButton"
+        class="place-order"
+        type="submit">
+
+        Place Order
+
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- SUCCESS MODAL -->
+
+<div id="successModal" class="modal">
+
+  <div class="modal-box">
+
+    <div class="order-success">
+
+      <div style="font-size:50px">✅</div>
+
+      <h2>Order Placed Successfully!</h2>
+
+      <p style="margin-top:10px">
+        Thank you for your order.
+      </p>
+
+      <div id="successOrderNumber" class="order-number"></div>
+
+      <button
+        class="checkout-btn"
+        onclick="closeSuccess()">
+
+        Continue Shopping
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
 <script>
-const SUPABASE_URL = "https://ndnsbfhozcaxfmxoetru.supabase.co";
 
-/* अपनी COPIED PUBLISHABLE KEY नीचे paste करें */
-const SUPABASE_KEY = "sb_publishable_z0uCg4hAQMMSf7sd4DJAgw_JoPtyMsH"
+const SUPABASE_URL =
+"https://ndnsbfhozcaxfmxoetru.supabase.co";
 
-const db = window.supabase.createClient(
+/*
+  अपनी EXISTING PUBLISHABLE KEY यहाँ paste करें
+*/
+const SUPABASE_KEY =
+  "sb_publishable_z0uCg4hAQMMSf7sd4DJAgw_JoPtyMsH"
+
+
+const db =
+window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
 
+
+/* CATEGORY LIST */
+
 const categories = [
+
   "All",
   "Health Care",
   "Food & Grocery",
@@ -234,97 +748,175 @@ const categories = [
   "Bags & Accessories",
   "Paint & Construction",
   "Agriculture"
+
 ];
 
+
 let allProducts = [];
+
 let selectedCategory = "All";
 
-const categoryBox = document.getElementById("categories");
-const productsBox = document.getElementById("products");
-const heading = document.getElementById("heading");
-const searchBox = document.getElementById("search");
+let cart = [];
+
+
+const categoryBox =
+document.getElementById("categories");
+
+const productsBox =
+document.getElementById("products");
+
+const heading =
+document.getElementById("heading");
+
+const searchBox =
+document.getElementById("search");
+
+const cartCount =
+document.getElementById("cartCount");
+
+
+/* CREATE CATEGORY BUTTONS */
 
 categories.forEach(category => {
-  const button = document.createElement("button");
+
+  const button =
+  document.createElement("button");
+
   button.textContent = category;
 
-  if(category === "All") button.classList.add("active");
+  if(category === "All"){
+    button.classList.add("active");
+  }
 
   button.onclick = () => {
+
     selectedCategory = category;
 
-    document.querySelectorAll(".categories button")
-      .forEach(b => b.classList.remove("active"));
+    document
+      .querySelectorAll(".categories button")
+      .forEach(b =>
+        b.classList.remove("active")
+      );
 
     button.classList.add("active");
+
     renderProducts();
+
   };
 
   categoryBox.appendChild(button);
+
 });
+
+
+/* LOAD PRODUCTS */
 
 async function loadProducts(){
 
   productsBox.innerHTML =
-    '<div class="loading">Loading products...</div>';
+  '<div class="loading">Loading products...</div>';
 
-  const { data, error } = await db
+
+  const { data, error } =
+  await db
     .from("products")
     .select("*")
     .order("id", { ascending:false });
 
+
   if(error){
+
     console.error(error);
+
     productsBox.innerHTML =
-      '<div class="empty">Products load nahi ho pa rahe hain.</div>';
+    '<div class="empty">Products load nahi ho pa rahe hain.</div>';
+
     return;
+
   }
 
+
   allProducts = data || [];
+
   renderProducts();
+
 }
+
+
+/* RENDER PRODUCTS */
 
 function renderProducts(){
 
-  const search = searchBox.value.toLowerCase().trim();
+  const search =
+  searchBox.value
+    .toLowerCase()
+    .trim();
 
-  let products = allProducts.filter(product => {
+
+  let products =
+  allProducts.filter(product => {
 
     const categoryMatch =
       selectedCategory === "All" ||
       product.category === selectedCategory;
 
+
     const searchMatch =
       !search ||
-      (product.product_name || "").toLowerCase().includes(search) ||
-      (product.brand || "").toLowerCase().includes(search) ||
-      (product.category || "").toLowerCase().includes(search);
+
+      (product.product_name || "")
+        .toLowerCase()
+        .includes(search) ||
+
+      (product.brand || "")
+        .toLowerCase()
+        .includes(search) ||
+
+      (product.category || "")
+        .toLowerCase()
+        .includes(search);
+
 
     return categoryMatch && searchMatch;
+
   });
+
 
   heading.textContent =
     selectedCategory === "All"
+
     ? `All Products (${products.length})`
+
     : `${selectedCategory} (${products.length})`;
 
+
   if(products.length === 0){
+
     productsBox.innerHTML =
       '<div class="empty">No products found.</div>';
+
     return;
+
   }
 
-  productsBox.innerHTML = products.map(product => {
 
-    const image = product.product_image
-      ? `<img src="${escapeHtml(product.product_image)}" alt="${escapeHtml(product.product_name)}">`
-      : `<div class="no-image">Product Image</div>`;
+  productsBox.innerHTML =
+  products.map(product => {
 
-    const source = product.source_url
-      ? `<a class="source" href="${escapeHtml(product.source_url)}" target="_blank">View Product</a>`
-      : "";
+    const image =
+      product.product_image
+
+      ? `<img
+          src="${escapeHtml(product.product_image)}"
+          alt="${escapeHtml(product.product_name)}">`
+
+      : `<div class="no-image">
+          Product Image
+         </div>`;
+
 
     return `
+
       <div class="card">
 
         <div class="product-image">
@@ -340,33 +932,654 @@ function renderProducts(){
         </div>
 
         <div class="qty">
-          ${escapeHtml(product.quantity_size || "Size not specified")}
+          ${escapeHtml(
+            product.quantity_size ||
+            "Size not specified"
+          )}
         </div>
 
         <div class="price">
-          ₹${Number(product.mrp || 0).toLocaleString("en-IN")}
+          ₹${Number(
+            product.mrp || 0
+          ).toLocaleString("en-IN")}
         </div>
 
-        ${source}
+        <button
+          class="add-btn"
+          onclick="addToCart(${product.id})">
+
+          🛒 Add to Cart
+
+        </button>
 
       </div>
+
     `;
+
   }).join("");
+
 }
+
+
+/* ADD TO CART */
+
+function addToCart(productId){
+
+  const product =
+    allProducts.find(
+      p => Number(p.id) === Number(productId)
+    );
+
+
+  if(!product) return;
+
+
+  const existing =
+    cart.find(
+      item =>
+      Number(item.id) === Number(productId)
+    );
+
+
+  if(existing){
+
+    existing.quantity += 1;
+
+  }else{
+
+    cart.push({
+
+      ...product,
+
+      quantity:1
+
+    });
+
+  }
+
+
+  updateCartCount();
+
+  showTemporaryMessage(
+    "Product cart me add ho gaya ✅"
+  );
+
+}
+
+
+/* UPDATE CART COUNT */
+
+function updateCartCount(){
+
+  const total =
+    cart.reduce(
+      (sum,item) =>
+        sum + item.quantity,
+      0
+    );
+
+  cartCount.textContent = total;
+
+}
+
+
+/* OPEN CART */
+
+function openCart(){
+
+  renderCart();
+
+  document.getElementById("cartModal")
+    .style.display = "block";
+
+}
+
+
+/* CLOSE CART */
+
+function closeCart(){
+
+  document.getElementById("cartModal")
+    .style.display = "none";
+
+}
+
+
+/* RENDER CART */
+
+function renderCart(){
+
+  const box =
+    document.getElementById("cartItems");
+
+  const totalBox =
+    document.getElementById("cartTotal");
+
+
+  if(cart.length === 0){
+
+    box.innerHTML =
+      '<div class="empty">Your cart is empty.</div>';
+
+    totalBox.textContent =
+      "Total: ₹0";
+
+    document.getElementById(
+      "checkoutButton"
+    ).style.display = "none";
+
+    return;
+
+  }
+
+
+  document.getElementById(
+    "checkoutButton"
+  ).style.display = "block";
+
+
+  box.innerHTML =
+  cart.map(item => {
+
+    const image =
+      item.product_image
+
+      ? `<img
+          src="${escapeHtml(item.product_image)}"
+          alt="${escapeHtml(item.product_name)}">`
+
+      : `<div
+          style="
+          width:70px;
+          height:70px;
+          background:#eef2f0;
+          border-radius:8px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-size:10px;
+          color:#777;">
+          Image
+        </div>`;
+
+
+    const itemTotal =
+      Number(item.mrp || 0) *
+      item.quantity;
+
+
+    return `
+
+      <div class="cart-item">
+
+        ${image}
+
+        <div class="cart-info">
+
+          <div class="cart-name">
+            ${escapeHtml(item.product_name)}
+          </div>
+
+          <div style="font-size:12px;color:#777">
+            ${escapeHtml(
+              item.quantity_size || ""
+            )}
+          </div>
+
+          <div class="cart-price">
+            ₹${itemTotal.toLocaleString("en-IN")}
+          </div>
+
+          <div class="qty-control">
+
+            <button
+              onclick="changeQuantity(${item.id},-1)">
+              −
+            </button>
+
+            <strong>
+              ${item.quantity}
+            </strong>
+
+            <button
+              onclick="changeQuantity(${item.id},1)">
+              +
+            </button>
+
+            <button
+              class="remove-btn"
+              onclick="removeFromCart(${item.id})">
+              Remove
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }).join("");
+
+
+  const total =
+    getCartTotal();
+
+
+  totalBox.textContent =
+    `Total: ₹${total.toLocaleString("en-IN")}`;
+
+}
+
+
+/* CHANGE QUANTITY */
+
+function changeQuantity(productId, change){
+
+  const item =
+    cart.find(
+      p => Number(p.id) === Number(productId)
+    );
+
+
+  if(!item) return;
+
+
+  item.quantity += change;
+
+
+  if(item.quantity <= 0){
+
+    cart =
+      cart.filter(
+        p => Number(p.id) !== Number(productId)
+      );
+
+  }
+
+
+  updateCartCount();
+
+  renderCart();
+
+}
+
+
+/* REMOVE ITEM */
+
+function removeFromCart(productId){
+
+  cart =
+    cart.filter(
+      p => Number(p.id) !== Number(productId)
+    );
+
+  updateCartCount();
+
+  renderCart();
+
+}
+
+
+/* CART TOTAL */
+
+function getCartTotal(){
+
+  return cart.reduce(
+    (total,item) => {
+
+      return total +
+        Number(item.mrp || 0) *
+        item.quantity;
+
+    },
+    0
+  );
+
+}
+
+
+/* CHECKOUT */
+
+function openCheckout(){
+
+  if(cart.length === 0){
+
+    alert("Cart is empty.");
+
+    return;
+
+  }
+
+
+  closeCart();
+
+  document.getElementById(
+    "checkoutModal"
+  ).style.display = "block";
+
+}
+
+
+/* CLOSE CHECKOUT */
+
+function closeCheckout(){
+
+  document.getElementById(
+    "checkoutModal"
+  ).style.display = "none";
+
+}
+
+
+/* PLACE ORDER */
+
+document
+.getElementById("checkoutForm")
+.addEventListener("submit", async function(e){
+
+  e.preventDefault();
+
+
+  if(cart.length === 0){
+
+    alert("Cart is empty.");
+
+    return;
+
+  }
+
+
+  const name =
+    document.getElementById(
+      "customerName"
+    ).value.trim();
+
+
+  const mobile =
+    document.getElementById(
+      "customerMobile"
+    ).value.trim();
+
+
+  const email =
+    document.getElementById(
+      "customerEmail"
+    ).value.trim();
+
+
+  const address =
+    document.getElementById(
+      "customerAddress"
+    ).value.trim();
+
+
+  const city =
+    document.getElementById(
+      "customerCity"
+    ).value.trim();
+
+
+  const state =
+    document.getElementById(
+      "customerState"
+    ).value.trim();
+
+
+  const pincode =
+    document.getElementById(
+      "customerPincode"
+    ).value.trim();
+
+
+  if(!/^[0-9]{10}$/.test(mobile)){
+
+    showCheckoutMessage(
+      "Please enter a valid 10 digit mobile number.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if(!/^[0-9]{6}$/.test(pincode)){
+
+    showCheckoutMessage(
+      "Please enter a valid 6 digit pincode.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const orderNumber =
+    "RCM-" +
+    Date.now();
+
+
+  const items =
+    cart.map(item => ({
+
+      product_id: item.id,
+
+      product_name: item.product_name,
+
+      brand: item.brand,
+
+      quantity_size: item.quantity_size,
+
+      mrp: Number(item.mrp || 0),
+
+      quantity: item.quantity,
+
+      item_total:
+        Number(item.mrp || 0) *
+        item.quantity
+
+    }));
+
+
+  const totalAmount =
+    getCartTotal();
+
+
+  const button =
+    document.getElementById(
+      "placeOrderButton"
+    );
+
+
+  button.disabled = true;
+
+  button.textContent =
+    "Placing Order...";
+
+
+  const { data, error } =
+    await db
+      .from("orders")
+      .insert([{
+
+        order_number: orderNumber,
+
+        customer_name: name,
+
+        mobile: mobile,
+
+        email: email || null,
+
+        address: address,
+
+        city: city,
+
+        state: state,
+
+        pincode: pincode,
+
+        items: items,
+
+        total_amount: totalAmount,
+
+        payment_method:
+          "Cash on Delivery",
+
+        payment_status:
+          "Pending",
+
+        order_status:
+          "New"
+
+      }])
+      .select()
+      .single();
+
+
+  button.disabled = false;
+
+  button.textContent =
+    "Place Order";
+
+
+  if(error){
+
+    console.error(error);
+
+    showCheckoutMessage(
+      "Order place nahi ho pa raha hai. Please try again.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  document.getElementById(
+    "checkoutModal"
+  ).style.display = "none";
+
+
+  document.getElementById(
+    "successOrderNumber"
+  ).textContent =
+    "Order ID: " + orderNumber;
+
+
+  document.getElementById(
+    "successModal"
+  ).style.display = "block";
+
+
+  cart = [];
+
+  updateCartCount();
+
+  document.getElementById(
+    "checkoutForm"
+  ).reset();
+
+});
+
+
+/* CHECKOUT MESSAGE */
+
+function showCheckoutMessage(text,type){
+
+  const box =
+    document.getElementById(
+      "checkoutMessage"
+    );
+
+  box.textContent = text;
+
+  box.className =
+    "message " + type;
+
+  box.style.display = "block";
+
+}
+
+
+/* SUCCESS CLOSE */
+
+function closeSuccess(){
+
+  document.getElementById(
+    "successModal"
+  ).style.display = "none";
+
+}
+
+
+/* TEMPORARY MESSAGE */
+
+function showTemporaryMessage(text){
+
+  const message =
+    document.createElement("div");
+
+  message.textContent = text;
+
+  message.style.position = "fixed";
+  message.style.bottom = "20px";
+  message.style.left = "50%";
+  message.style.transform =
+    "translateX(-50%)";
+  message.style.background =
+    "#123b2a";
+  message.style.color = "white";
+  message.style.padding =
+    "12px 18px";
+  message.style.borderRadius =
+    "10px";
+  message.style.zIndex = "1000";
+  message.style.fontWeight = "700";
+
+  document.body.appendChild(message);
+
+
+  setTimeout(() => {
+
+    message.remove();
+
+  }, 1800);
+
+}
+
+
+/* ESCAPE HTML */
 
 function escapeHtml(value){
+
   return String(value)
+
     .replaceAll("&","&amp;")
+
     .replaceAll("<","&lt;")
+
     .replaceAll(">","&gt;")
+
     .replaceAll('"',"&quot;")
+
     .replaceAll("'","&#039;");
+
 }
 
-searchBox.addEventListener("input", renderProducts);
+
+searchBox.addEventListener(
+  "input",
+  renderProducts
+);
+
 
 loadProducts();
+
 </script>
 
 </body>
-</html>
+  </html>

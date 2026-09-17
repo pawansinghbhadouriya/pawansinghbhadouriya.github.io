@@ -1462,8 +1462,10 @@ document
     console.error(error);
 
     showCheckoutMessage(
-      "Order place nahi ho pa raha hai. Please try again.",
-      "error"
+  error.message,
+  "error"
+);
+
     );
 
     return;

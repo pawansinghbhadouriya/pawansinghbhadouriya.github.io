@@ -654,10 +654,21 @@ footer{
 
         <label>Payment Method</label>
 
-        <input
-          type="text"
-          value="Cash on Delivery"
-          readonly>
+        <select id="paymentMethod" required
+  style="width:100%;border:1px solid #d5d9dc;border-radius:8px;padding:12px;font-size:15px;background:white;">
+
+  <option value="Cash on Delivery">
+    Cash on Delivery
+  </option>
+
+  <option value="Online Payment">
+    Online Payment
+  </option>
+
+        </select>
+          
+      
+  
 
       </div>
 
@@ -1426,7 +1437,8 @@ document
         total_amount: totalAmount,
 
         payment_method:
-          "Cash on Delivery",
+  document.getElementById("paymentMethod").value,
+      
 
         payment_status:
           "Pending",

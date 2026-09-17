@@ -821,37 +821,72 @@ categories.forEach(category => {
 
 
 /* LOAD PRODUCTS */
-
 async function loadProducts(){
-
   productsBox.innerHTML =
-  '<div class="loading">Loading products...</div>';
+    '<div class="loading">Loading products...</div>';
 
+  try {
 
-  const { data, error } =
-  await db
-    .from("products")
-    .select("*")
-    .order("id", { ascending:false });
+    const { data, error } =
+      await db
+        .from("products")
+        .select("*")
+        .order("id", { ascending:false });
 
+    if(error){
+      console.error(error);
 
-  if(error){
+      productsBox.innerHTML =
+        '<div class="empty">' +
+        error.message +
+        '</div>';
+
+      return;
+    }
+
+    allProducts = data || [];
+    renderProducts();
+
+  } catch(error) {
 
     console.error(error);
 
     productsBox.innerHTML =
-    '<div class="empty">Products load nahi ho pa rahe hain.</div>';
-
-    return;
-
+      '<div class="empty">' +
+      (error.message || String(error)) +
+      '</div>';
   }
-
-
-  allProducts = data || [];
-
-  renderProducts();
-
 }
+
+
+  
+  
+
+
+  
+
+    
+  
+    
+
+
+  
+
+    
+
+    
+  
+
+    
+
+
+
+
+  
+
+  
+
+
 
 
 /* RENDER PRODUCTS */

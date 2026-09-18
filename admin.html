@@ -798,7 +798,65 @@ async function updateStatus(
     status;
 
   }
+// SEND STATUS UPDATE EMAIL TO CUSTOMER
+try {
 
+  if (order && order.email) {
+
+    const response = await fetch(
+      "https://ndnsbfhozcaxfmxoetru.supabase.co/functions/v1/resend-email",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          type: "status_update",
+
+          order: {
+            order_number: order.order_number,
+            customer_name: order.customer_name,
+            mobile: order.mobile,
+            email: order.email,
+            address: order.address,
+            city: order.city,
+            state: order.state,
+            pincode: order.pincode,
+            items: order.items,
+            total_amount: order.total_amount,
+            payment_method: order.payment_method,
+            order_status: status
+          }
+        })
+      }
+    );
+
+    const emailResult = await response.json();
+
+    if (!response.ok) {
+      console.error(
+        "Customer status email failed:",
+        emailResult
+      );
+    } else {
+      console.log(
+        "Customer status email sent:",
+        emailResult
+      );
+    }
+
+  }
+
+} catch (emailError) {
+
+  console.error(
+    "Customer status email error:",
+    emailError
+  );
+
+}
 
   renderOrders();
 

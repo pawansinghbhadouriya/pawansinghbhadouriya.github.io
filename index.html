@@ -1524,7 +1524,33 @@ document
     return;
 
   }
+// SEND NEW ORDER EMAIL TO ADMIN
+const { error: emailError } = await db.functions.invoke(
+  "resend-email",
+  {
+    body: {
+      type: "new_order",
+      order: {
+        order_number: orderNumber,
+        customer_name: name,
+        mobile: mobile,
+        email: email || "",
+        address: address,
+        city: city,
+        state: state,
+        pincode: pincode,
+        items: items,
+        total_amount: totalAmount,
+        payment_method: document.getElementById("paymentMethod").value,
+        order_status: "New"
+      }
+    }
+  }
+);
 
+if (emailError) {
+  console.error("Admin email notification failed:", emailError);
+    }
 
   document.getElementById(
     "checkoutModal"

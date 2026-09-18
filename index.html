@@ -731,7 +731,7 @@ const SUPABASE_URL =
   अपनी EXISTING PUBLISHABLE KEY यहाँ paste करें
 */
 const SUPABASE_KEY =
-  "sb_publishable_z0uCg4hAQMMSf7sd4DJAgw_JoPtyMsH"
+  " "
 
 
 let db;
@@ -1525,52 +1525,63 @@ document
 
   }
 // SEND NEW ORDER EMAIL TO ADMIN
-const { error: emailError } = await db.functions.invoke(
-  "resend-email",
-  {
-    body: {
-      type: "new_order",
-      order: {
-        order_number: orderNumber,
-        customer_name: name,
-        mobile: mobile,
-        email: email || "",
-        address: address,
-        city: city,
-        state: state,
-        pincode: pincode,
-        items: items,
-        total_amount: totalAmount,
-        payment_method: document.getElementById("paymentMethod").value,
-        order_status: "New"
-      }
+try {
+
+  const response = await fetch(
+    "https://ndnsbfhozcaxfmxoetru.supabase.co/functions/v1/resend-email",
+    {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+        type: "new_order",
+
+        order: {
+          order_number: orderNumber,
+          customer_name: name,
+          mobile: mobile,
+          email: email || "",
+          address: address,
+          city: city,
+          state: state,
+          pincode: pincode,
+          items: items,
+          total_amount: totalAmount,
+          payment_method:
+            document.getElementById("paymentMethod").value,
+          order_status: "New"
+        }
+      })
     }
+  );
+
+  const emailResult = await response.json();
+
+  if (!response.ok) {
+    console.error(
+      "Admin email notification failed:",
+      emailResult
+    );
+  } else {
+    console.log(
+      "Admin email notification sent:",
+      emailResult
+    );
   }
-);
 
-if (emailError) {
-  console.error("Admin email notification failed:", emailError);
-    }
+} catch (emailError) {
 
-  document.getElementById(
-    "checkoutModal"
-  ).style.display = "none";
+  console.error(
+    "Admin email notification error:",
+    emailError
+  );
 
-
-  document.getElementById(
-    "successOrderNumber"
-  ).textContent =
-    "Order ID: " + orderNumber;
+}
 
 
-  document.getElementById(
-    "successModal"
-  ).style.display = "block";
-
-
-  cart = [];
-
-  updateCartCount();
 
   document.getElementById(
     "checkoutForm"

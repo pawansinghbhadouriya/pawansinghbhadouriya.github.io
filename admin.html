@@ -809,7 +809,8 @@ try {
         method: "POST",
 
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_KEY
         },
 
         body: JSON.stringify({
@@ -857,10 +858,9 @@ try {
   );
 
 }
+renderOrders();  
 
-  renderOrders();
 
-}
 
 
 /* SEARCH */

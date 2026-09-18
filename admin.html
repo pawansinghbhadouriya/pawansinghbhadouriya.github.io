@@ -550,10 +550,11 @@ function renderOrders(){
     .toLowerCase();
 
 
-    return
-    (!search || text.includes(search))
-    &&
-    (!status || order.order_status === status);
+    return (
+  (!search || text.includes(search))
+  &&
+  (!status || order.order_status === status)
+);
 
   });
 

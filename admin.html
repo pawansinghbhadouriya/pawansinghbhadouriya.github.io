@@ -805,39 +805,31 @@ try {
 
   if (order && order.email) {
 
-    const { data: emailResult, error: emailError } =
-  await db.functions.invoke("resend-email", {
-    body: {
-      type: "status_update",
+    const itemsText =
+      Array.isArray(order.items)
+        ? order.items.map(item =>
+            `${item.name || item.product_name || "Product"} × ${item.quantity || item.qty || 1} — ₹${item.price || item.mrp || 0}`
+          ).join("\n")
+        : String(order.items || "");
 
-      order: {
-        order_number: order.order_number,
-        customer_name: order.customer_name,
-        mobile: order.mobile,
+    const emailResult = await emailjs.send(
+      "service_5ss58377",
+      "template_5k2lre8",
+      {
         email: order.email,
-        address: order.address,
-        city: order.city,
-        state: order.state,
-        pincode: order.pincode,
-        items: order.items,
-        total_amount: order.total_amount,
-        payment_method: order.payment_method,
-        order_status: status
+        customer_name: order.customer_name,
+        order_id: order.order_number,
+        order_status: status,
+        payment_method: order.payment_method || "Cash on Delivery",
+        orders: itemsText,
+        total_amount: order.total_amount
       }
-    }
-  });
+    );
 
-if (emailError) {
-  console.error(
-    "Customer status email failed:",
-    emailError
-  );
-} else {
-  console.log(
-    "Customer status email sent:",
-    emailResult
-  );
-}
+    console.log(
+      "Customer status email sent:",
+      emailResult
+    );
 
   }
 
@@ -849,6 +841,7 @@ if (emailError) {
   );
 
 }
+
 renderOrders();  
 }
 

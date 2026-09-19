@@ -7,10 +7,15 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <script>
 emailjs.init("5nxQpwuN6D-fx4Xv8");
-</script><style>
-*{box-sizing:border-box}
+</script>
+
+<style>
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -211,6 +216,7 @@ header .small{
 }
 
 @media(max-width:700px){
+
   .stats{
     grid-template-columns:1fr 1fr;
   }
@@ -223,6 +229,7 @@ header .small{
     flex-direction:column;
     align-items:flex-start;
   }
+
 }
 </style>
 </head>
@@ -230,13 +237,17 @@ header .small{
 <body>
 
 <header>
+
   <div class="top">
 
     <div>
+
       <h1>RCM Admin Dashboard</h1>
+
       <div class="small">
         Orders & Customer Management
       </div>
+
     </div>
 
     <button
@@ -248,12 +259,11 @@ header .small{
     </button>
 
   </div>
+
 </header>
 
 
 <main class="container">
-
-<!-- LOGIN -->
 
 <section id="loginBox" class="login">
 
@@ -264,20 +274,28 @@ header .small{
   <form id="loginForm">
 
     <div class="field">
+
       <label>Email</label>
+
       <input
         id="loginEmail"
         type="email"
         required>
+
     </div>
 
+
     <div class="field">
+
       <label>Password</label>
+
       <input
         id="loginPassword"
         type="password"
         required>
+
     </div>
+
 
     <button
       class="btn primary"
@@ -289,8 +307,6 @@ header .small{
 
 </section>
 
-
-<!-- DASHBOARD -->
 
 <section
   id="dashboard"
@@ -382,22 +398,14 @@ header .small{
 const SUPABASE_URL =
 "https://ndnsbfhozcaxfmxoetru.supabase.co";
 
-
-/*
-PASTE YOUR EXISTING SUPABASE
-PUBLISHABLE KEY BELOW
-*/
-
 const SUPABASE_KEY =
-"sb_publishable_z0uCg4hAQMMSf7sd4DJAgw_JoPtyMsH"
-
+"sb_publishable_z0uCg4hAQMMSf7sd4DJAgw_JoPtyMsH";
 
 const db =
 window.supabase.createClient(
   SUPABASE_URL,
-  SUPABASE_KEY  
+  SUPABASE_KEY
 );
-
 
 let orders = [];
 
@@ -425,13 +433,11 @@ document
   .getElementById("loginPassword")
   .value;
 
-
   const {error} =
   await db.auth.signInWithPassword({
     email:email,
     password:password
   });
-
 
   if(error){
 
@@ -442,7 +448,6 @@ document
 
     return;
   }
-
 
   showDashboard();
 
@@ -490,7 +495,6 @@ async function loadOrders(){
   .innerHTML =
   "Loading orders...";
 
-
   const {data,error} =
   await db
   .from("orders")
@@ -499,7 +503,6 @@ async function loadOrders(){
     "created_at",
     {ascending:false}
   );
-
 
   if(error){
 
@@ -512,7 +515,6 @@ async function loadOrders(){
 
     return;
   }
-
 
   orders = data || [];
 
@@ -532,12 +534,10 @@ function renderOrders(){
   .toLowerCase()
   .trim();
 
-
   const status =
   document
   .getElementById("statusFilter")
   .value;
-
 
   const filtered =
   orders.filter(function(order){
@@ -551,12 +551,11 @@ function renderOrders(){
     .join(" ")
     .toLowerCase();
 
-
     return (
-  (!search || text.includes(search))
-  &&
-  (!status || order.order_status === status)
-);
+      (!search || text.includes(search))
+      &&
+      (!status || order.order_status === status)
+    );
 
   });
 
@@ -680,9 +679,11 @@ function renderOrders(){
 
         📱 ${esc(order.mobile)}
 
-        ${order.email
+        ${
+          order.email
           ? `<br>📧 ${esc(order.email)}`
-          : ""}
+          : ""
+        }
 
         <br>
 
@@ -709,18 +710,26 @@ function renderOrders(){
 
             <div class="item">
 
-              ${esc(item.product_name)}
+              ${esc(
+                item.product_name ||
+                item.name ||
+                "Product"
+              )}
 
               (${esc(
                 item.quantity_size || ""
               )})
 
               × ${Number(
-                item.quantity || 0
+                item.quantity ||
+                item.qty ||
+                0
               )}
 
               — ₹${Number(
-                item.mrp || 0
+                item.mrp ||
+                item.price ||
+                0
               ).toLocaleString("en-IN")}
 
             </div>
@@ -800,51 +809,120 @@ async function updateStatus(
     status;
 
   }
-// SEND STATUS UPDATE EMAIL TO CUSTOMER
-try {
 
-  if (order && order.email) {
 
-    const itemsText =
-      Array.isArray(order.items)
+  /* SEND STATUS UPDATE EMAIL TO CUSTOMER */
+
+  try {
+
+    if (
+      order &&
+      order.email &&
+      String(order.email).trim()
+    ){
+
+      const itemsText =
+        Array.isArray(order.items)
         ? order.items.map(item =>
-            `${item.name || item.product_name || "Product"} × ${item.quantity || item.qty || 1} — ₹${item.price || item.mrp || 0}`
-          ).join("\n")
-        : String(order.items || "");
 
-    const emailResult = await emailjs.send(
-      "service_5ss58377",
-      "template_yz5pssd",
-      {
-        email: order.email,
-        customer_name: order.customer_name,
-        order_id: order.order_number,
-        order_status: status,
-        payment_method: order.payment_method || "Cash on Delivery",
-        orders: itemsText,
-        total_amount: order.total_amount
-      }
+            `${
+              item.name ||
+              item.product_name ||
+              "Product"
+            } × ${
+              item.quantity ||
+              item.qty ||
+              1
+            } — ₹${
+              item.price ||
+              item.mrp ||
+              0
+            }`
+
+          ).join("\n")
+
+        : String(
+            order.items || ""
+          );
+
+
+      const emailResult =
+      await emailjs.send(
+
+        /* CORRECT EMAILJS SERVICE ID */
+        "service_5s58377",
+
+        /* CORRECT ORDER CONFIRMATION TEMPLATE */
+        "template_yz5pssd",
+
+        {
+          email:
+            String(order.email).trim(),
+
+          customer_name:
+            order.customer_name || "",
+
+          order_id:
+            order.order_number || "",
+
+          order_status:
+            status || "",
+
+          payment_method:
+            order.payment_method ||
+            "Cash on Delivery",
+
+          orders:
+            itemsText,
+
+          total_amount:
+            order.total_amount || 0
+        }
+
+      );
+
+
+      console.log(
+        "Customer status email sent successfully:",
+        emailResult
+      );
+
+    } else {
+
+      console.warn(
+        "Customer email not found for order:",
+        order
+      );
+
+      alert(
+        "Order me customer email address nahi mila."
+      );
+
+    }
+
+  } catch (emailError){
+
+    console.error(
+      "Customer status email error:",
+      emailError
     );
 
-    console.log(
-      "Customer status email sent:",
-      emailResult
+    alert(
+      "Status update ho gaya, lekin customer email send nahi hua.\n\n" +
+      "EmailJS Error: " +
+      (
+        emailError?.text ||
+        emailError?.message ||
+        JSON.stringify(emailError)
+      )
     );
 
   }
 
-} catch (emailError) {
 
-  console.error(
-    "Customer status email error:",
-    emailError
-  );
+  renderOrders();
 
 }
-
-renderOrders();  
-}
-
 
 
 /* SEARCH */
